@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="SignalR.BusinessLayer/SignalR.BusinessLayer.csproj" Id="e9995b33-751c-4a06-839d-39ee82cd3f83" />
+  <Project Path="SignalR.DataAccessLayer/SignalR.DataAccessLayer.csproj" Id="eba434b6-0e6e-49aa-b701-67c27de1462f" />
+  <Project Path="SignalR.DtoLayer/SignalR.DtoLayer.csproj" Id="e54451c1-2c13-46a0-be7e-106eeb4885ec" />
+  <Project Path="SignalR.EntityLayer/SignalR.EntityLayer.csproj" />
+  <Project Path="SignalRApi/SignalRApi.csproj" />
+  <Project Path="SignalRWebUI/SignalRWebUI.csproj" />
+</Solution>
