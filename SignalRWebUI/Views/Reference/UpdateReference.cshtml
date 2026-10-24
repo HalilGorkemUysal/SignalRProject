@@ -1,0 +1,50 @@
+﻿@model UpdateReferenceDto
+
+@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Referans İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Referansı Güncelle</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" asp-for="ReferenceId"/>
+
+                                <label for="name">Ad Soyad Giriniz</label>
+                                <input asp-for="Name" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="title">Başlık Giriniz</label>
+                                <input asp-for="Title" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="comment">Yorum Giriniz</label>
+                                <textarea rows="5" asp-for="Comment" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="imageurl">Görsel Url'ini' Giriniz</label>
+                                <input asp-for="ImageUrl" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn btn-success">Referansı Güncelle</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

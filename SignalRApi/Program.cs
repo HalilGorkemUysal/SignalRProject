@@ -32,6 +32,9 @@ builder.Services.AddScoped<IFeatureDal, EfFeatureDal>();
 builder.Services.AddScoped<IProductService, ProductManager>();
 builder.Services.AddScoped<IProductDal, EfProductDal>();
 
+builder.Services.AddScoped<IReferenceService, ReferenceManager>();
+builder.Services.AddScoped<IReferenceDal, EfReferenceDal>();
+
 builder.Services.AddScoped<ISocialMediaService, SocialMediaManager>();
 builder.Services.AddScoped<ISocialMediaDal, EfSocialMediaDal>();
 

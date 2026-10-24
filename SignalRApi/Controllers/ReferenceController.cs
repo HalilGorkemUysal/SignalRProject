@@ -38,7 +38,7 @@ namespace SignalRApi.Controllers
             return Ok("Referans Başarıyla eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteReference(int id)
         {
             var value = _referenceService.TGetById(id);
@@ -55,7 +55,7 @@ namespace SignalRApi.Controllers
             return Ok("Referans Başarıyla Güncellendi");
         }
 
-        [HttpGet("GetReference")]
+        [HttpGet("GetReference/{id}")]
         public IActionResult GetReference(int id)
         {
             var value = _referenceService.TGetById(id);
