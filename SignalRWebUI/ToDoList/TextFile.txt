@@ -1,0 +1,19 @@
+﻿--Category Count
+--Product Count
+--Aktif kategori sayısı
+--Pasif kategori sayısı
+
+--Kategori adına göre ürün sayısı1
+--Kategori adına göre ürün sayısı2
+
+--Ortalama Fiyat
+--En Düşük Ürünlü Fiyat
+--En Yüksek Ürünlü Fiyat
+--Ortalama Hamburger Fiyatı
+
+--Toplam Sipariş Sayısı
+--Aktif Sipariş Sayısı
+--Son Sipariş Tutarı
+--Kasadaki Tutar
+--Bugünkü Kazanç
+--Mas Sayısı

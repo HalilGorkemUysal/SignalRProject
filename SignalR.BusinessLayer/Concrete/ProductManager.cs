@@ -18,6 +18,16 @@ namespace SignalR.BusinessLayer.Concrete
             _productDal = productDal;
         }
 
+        public int TProductCountByCategoryNameDrink()
+        {
+            return _productDal.ProductCountByCategoryNameDrink();
+        }
+
+        public int TProductCountByCategoryNameHamburger()
+        {
+            return _productDal.ProductCountByCategoryNameHamburger();
+        }
+
         public void TAdd(Product entity)
         {
             _productDal.Add(entity);
@@ -45,9 +55,34 @@ namespace SignalR.BusinessLayer.Concrete
             return products;
         }
 
+        public int TProductCount()
+        {
+            return _productDal.ProductCount();
+        }
+
         public void TUpdate(Product entity)
         {
             _productDal.Update(entity);
+        }
+
+        public decimal TProductPriceAvg()
+        {
+            return _productDal.ProductPriceAvg();
+        }
+
+        public string TProductNameByMaxPrice()
+        {
+            return _productDal.ProductNameByMaxPrice();
+        }
+
+        public string TProductNameByMinPrice()
+        {
+            return _productDal.ProductNameByMinPrice();
+        }
+
+        public decimal TAvgPriceOfHamburgers()
+        {
+            return _productDal.AvgPriceOfHamburgers();
         }
     }
 }

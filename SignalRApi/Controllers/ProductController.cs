@@ -28,6 +28,61 @@ namespace SignalRApi.Controllers
             return Ok(value);
         }
 
+        [HttpGet("ProductCount")]
+        public IActionResult ProductCount()
+        {
+            var value = _productService.TProductCount();
+
+            return Ok(value);
+        }
+
+        [HttpGet("ProductNameByMinPrice")]
+        public IActionResult ProductNameByMinPrice()
+        {
+            var value = _productService.TProductNameByMinPrice();
+
+            return Ok(value);
+        }
+
+        [HttpGet("AvgPriceOfHamburgers")]
+        public IActionResult AvgPriceOfHamburgers()
+        {
+            var value = _productService.TAvgPriceOfHamburgers();
+            return Ok(value);
+        }
+
+        [HttpGet("ProductNameByMaxPrice")]
+        public IActionResult ProductNameByMaxPrice()
+        {
+            var value = _productService.TProductNameByMaxPrice();
+
+            return Ok(value);
+        }
+
+        [HttpGet("ProductPriceAvg")]
+        public IActionResult ProductPriceAvg()
+        {
+            var value = _productService.TProductPriceAvg();
+            return Ok(value);
+        }
+
+        [HttpGet("ProductCountByHamburger")]
+        public IActionResult ProductCountByHamburger()
+        {
+            var value = _productService.TProductCountByCategoryNameHamburger();
+
+            return Ok(value);
+        }
+
+        [HttpGet("ProductCountByDrink")]
+        public IActionResult ProductCountByDrink()
+        {
+            var value = _productService.TProductCountByCategoryNameDrink();
+
+            return Ok(value);
+        }
+
+
         [HttpGet("ProductListWithCategory")]
         public IActionResult ProductListWithCategory()
         {
