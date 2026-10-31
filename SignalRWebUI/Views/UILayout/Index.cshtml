@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("UILayoutHead")
+
+<body>
+
+    <div class="hero_area">
+        <div class="bg-box">
+            <img src="~/feane-v1.0.0/images/hero-bg.jpg" alt="">
+        </div>
+        <!-- header section strats -->
+        @await Component.InvokeAsync("UILayoutNavbar")
+
+        <!-- end header section -->
+        <!-- slider section -->
+        @await Component.InvokeAsync("UILayoutSlider") @* //geniş görselin oldugu kısım *@
+        <!-- end slider section -->
+    </div>
+
+    <!-- offer section -->
+    @RenderBody()
+
+    <!-- end offer section -->
+    <!-- food section -->
+
+   
+
+    <!-- end client section -->
+    <!-- footer section -->
+    @await Component.InvokeAsync("UILayoutFooter")
+    <!-- footer section -->
+    @await Component.InvokeAsync("UILayoutScripts")
+
+</body>
+
+</html>
