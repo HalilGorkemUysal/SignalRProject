@@ -1,0 +1,41 @@
+﻿@model CreateMenuTableDto
+@{
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Ana Sayfa Hakkımızda İşlemleri</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Hakkımızda Yazı Girişi</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="title">Başlığı Giriniz</label>
+                                <input asp-for="Title" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="imageurl">Görsel Url'ini Giriniz</label>
+                                <input asp-for="ImageUrl" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="description">Açıklamayı Giriniz</label>
+                                <textarea rows="5" asp-for="Description" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn btn-success">Hakkımızdayı Ekle</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
