@@ -18,3 +18,4 @@ namespace SignalRWebUI.Dtos.ContactDtos
         public string OpenHours { get; set; }
     }
 }
+

@@ -16,9 +16,7 @@
 	<div class="container-fluid">
         <script type="text/javascript">
 
-
                     $(document).ready(() => {
-
 
                         var connection = new signalR.HubConnectionBuilder()
 						.withUrl("https://localhost:7067/SignalRHub").build();
@@ -40,28 +38,28 @@
 								  <th scope="col">#</th>
 								  <th scope="col">Ad Soyad</th>
 								  <th scope="col">Telefon</th>
-								  <th scope="col">Mail</th>
 								  <th scope="col">Kişi Sayısı</th>
-								  <th scope="col">Hangi Tarih için</th>
-								  <th scope="col">Tarih</th>
+								  <th scope="col">Rezervasyon Durumu</th>
 								  <th scope="col">Sil</th>
 								  <th scope="col">Güncelle</th>
+								  <th scope="col">Onayla</th>
+								  <th scope="col">İptal Et</th>
 								</tr>
 								</thead>
 								<tbody>`
 								$.each(value,(index,item)=>{
 								tablehtml +=  `
-								<tr>
-									<td>${item.bookingId}</td>
-									<td>${item.name}</td>
-									<td>${item.phone}</td>
-									<td>${item.mail}</td>
-								    <td>${item.personCount}</td>
-								    <td>${new Date(item.date).toLocaleDateString("tr-TR")}</td>
-									<td>${"Rezervasyon Alındı"}</td>
-									<td><a href="/Booking/DeleteBooking/${item.bookingId}/" class="btn btn-outline-danger">Sil</a></td>
-									<td><a href="/Booking/UpdateBooking/${item.bookingId}/" class="btn btn-outline-success">Güncelle</a></td>
-									</tr>`});
+								<tr> 
+						<td>${index+1}</td>
+						<td>${item.name}</td>
+						<td>${item.phone}</td>
+						<td>${item.personCount}</td>
+						<td>${item.description}</td>
+						<td><a href="/Booking/DeleteBooking/${item.bookingId}/" class="btn btn-outline-danger">Sil</a></td>
+						<td><a href="/Booking/UpdateBooking/${item.bookingId}/" class="btn btn-outline-success">Güncelle</a></td>
+						<td><a href="/Booking/BookingStatusApproved/${item.bookingId}/" class="btn btn-outline-info">Onayla</a></td>
+						<td><a href="/Booking/BookingStatusCancelled/${item.bookingId}/" class="btn btn-outline-dark">İptal Et</a></td>
+						</tr>`});
 
 							tablehtml += "</tbody></table>";
 							$("#bookinglist").html(tablehtml);

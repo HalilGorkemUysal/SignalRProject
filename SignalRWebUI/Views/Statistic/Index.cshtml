@@ -12,9 +12,7 @@
     <div class="container-fluid">
         <script type="text/javascript">
 
-
                     $(document).ready(() => {
-
 
                         var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7067/SignalRHub").build();
                         $("#connstatus").text(connection.state);

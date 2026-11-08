@@ -13,11 +13,11 @@
                 <form method="post">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Yeni İletişim Girişi</div>
+                            <div class="card-title">İletişim Girişi</div>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <input  type="hidden" asp-for="ContactId"/>
+                                <input type="hidden" asp-for="ContactId"/>
 
                                 <label for="title">Konumu Giriniz</label>
                                 <input asp-for="Location" type="text" class="form-control">
@@ -41,8 +41,32 @@
                                 <input asp-for="FooterDescription" type="text" class="form-control">
                             </div>
                         </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="title">Başlık Giriniz</label>
+                                <input asp-for="FooterTitle" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="imageurl">Açık Günleri Giriniz</label>
+                                <input asp-for="OpenDays" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="imageurl">Açık Günlerin Açıklamasını Giriniz</label>
+                                <input asp-for="OpenDaysDescription" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="description">Açık Saatleri Giriniz</label>
+                                <input asp-for="OpenHours" type="text" class="form-control" />
+                            </div>
+                        </div>
                         <div class="card-action">
-                            <button class="btn btn-success">İletişimi Ekle</button>
+                            <button class="btn btn-success">İletişimi Güncelle</button>
                         </div>
                     </div>
                 </form>

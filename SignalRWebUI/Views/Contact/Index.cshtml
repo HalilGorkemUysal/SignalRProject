@@ -3,7 +3,6 @@
 
 @{
 	Layout = "~/Views/AdminLayout/Index.cshtml";
-	int counter = 0;
 }
 <div class="content">
 	<div class="container-fluid">
@@ -16,15 +15,14 @@
 					</div>
 					<div class="card-body">
 						<div class="card-sub">
-							İletişim ile ilgili bilgileri aşağıda görebilirsiniz.
+							İletişim ile ilgili bilgileri aşağıda görebilirsiniz. Tema bütünlüğü için <strong>1</strong> tane iletişim alanı oluşturmayı unutmayın.
 						</div>
 						<table class="table mt-3">
 							<thead>
 								<tr>
-									<th scope="col">#</th>
 									<th scope="col">Konum</th>
 									<th scope="col">Mail</th>
-									<th scope="col">Numara</th>
+									<th scope="col">Telefon</th>
 									<th scope="col">Açıklama</th>
 									<th scope="col">Sil</th>
 									<th scope="col">Güncelle</th>
@@ -33,9 +31,7 @@
 							<tbody>
 								@foreach (var item in Model)
 								{
-									counter++;
 									<tr>
-										<td>@counter</td>
 										<td>@item.Location</td>
 										<td>@item.Mail</td>
 										<td>@item.Number</td>
