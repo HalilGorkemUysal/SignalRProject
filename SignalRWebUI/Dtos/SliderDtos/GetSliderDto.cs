@@ -1,8 +1,14 @@
-﻿namespace SignalR.EntityLayer.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SignalRWebUI.Dtos.SliderDtos
 {
-    public class Feature
+    public class GetSliderDto
     {
-        public int FeatureId { get; set; }
+        public int SliderId { get; set; }
         public string Title1 { get; set; }
         public string Description1 { get; set; }
         public string Title2 { get; set; }

@@ -16,7 +16,7 @@ namespace SignalRWebUI.ViewComponents.UILayoutViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7067/api/Sliders/");
+            var responseMessage = await client.GetAsync("https://localhost:7067/api/Slider/");
 
             if (responseMessage.IsSuccessStatusCode)
             {

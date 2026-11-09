@@ -21,7 +21,6 @@ namespace SignalR.DataAccessLayer.Concrete
         public DbSet<Category> Categories { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Discount> Discounts { get; set; }
-        public DbSet<Feature> Features { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Reference> References { get; set; }
         public DbSet<SocialMedia> SocialMedias { get; set; }
@@ -32,6 +31,7 @@ namespace SignalR.DataAccessLayer.Concrete
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
     }
 }

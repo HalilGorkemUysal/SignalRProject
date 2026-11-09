@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace SignalR.DataAccessLayer.Abstract
 {
-    public interface IFeatureDal : IGenericDal<Feature>
+    public interface IMessageDal : IGenericDal<Message>
     {
+        
     }
 }
