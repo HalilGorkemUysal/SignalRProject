@@ -1,4 +1,6 @@
 ﻿using SignalR.DataAccessLayer.Abstract;
+using SignalR.DataAccessLayer.Concrete;
+using SignalR.DataAccessLayer.Repositories;
 using SignalR.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,31 +10,11 @@ using System.Threading.Tasks;
 
 namespace SignalR.DataAccessLayer.EntityFramework
 {
-    public class EfMessageDal : IMessageDal
+    public class EfMessageDal : GenericRepository<Message>,IMessageDal
     {
-        public void Add(Message entity)
+        public EfMessageDal(SignalRContext context) : base(context)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Message entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Message GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Message> GetListAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Message entity)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

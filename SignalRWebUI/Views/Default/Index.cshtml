@@ -6,7 +6,8 @@
 }
 
 @await Component.InvokeAsync("DefaultOffer")
-@await Component.InvokeAsync("DefaultMenu")
+@await Component.InvokeAsync("DefaultMenu") 
 @await Component.InvokeAsync("DefaultAbout")
-@await Component.InvokeAsync("DefaultBookATable")
+@await Html.PartialAsync("SendMessage")
+@* @await Component.InvokeAsync("DefaultBookATable") *@
 @await Component.InvokeAsync("DefaultTestimonial")
