@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.DtoLayer.AboutDto;
@@ -11,10 +12,12 @@ namespace SignalRApi.Controllers
     public class AboutController : ControllerBase
     {
         private readonly IAboutService _aboutService;
+        private readonly IMapper _mapper;
 
-        public AboutController(IAboutService aboutService)
+        public AboutController(IAboutService aboutService, IMapper mapper)
         {
             _aboutService = aboutService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,18 +25,14 @@ namespace SignalRApi.Controllers
         {
             var values = _aboutService.TGetListAll();
 
-            return Ok(values);
+            return Ok(_mapper.Map<List<ResultAboutDto>>(values));
         }
 
         [HttpPost]
         public IActionResult CreateAbout(CreateAboutDto createAboutDto)
         {
-            var about = new About
-            {
-                Title = createAboutDto.Title,
-                Description = createAboutDto.Description,
-                ImageUrl = createAboutDto.ImageUrl
-            };
+
+            var about = _mapper.Map<About>(createAboutDto);
 
             _aboutService.TAdd(about);
 
@@ -52,13 +51,7 @@ namespace SignalRApi.Controllers
         [HttpPut]
         public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto)
         {
-            var about = new About
-            {
-                AboutId =updateAboutDto.AboutId,
-                Title = updateAboutDto.Title,
-                Description = updateAboutDto.Description,
-                ImageUrl = updateAboutDto.ImageUrl
-            };
+            var about = _mapper.Map<About>(updateAboutDto);
 
             _aboutService.TUpdate(about);
 
@@ -69,7 +62,7 @@ namespace SignalRApi.Controllers
         public IActionResult GetAbout(int id)
         {
             var value = _aboutService.TGetById(id);
-            return Ok(value);
+            return Ok(_mapper.Map<GetAboutDto>(value));
         }
     }
 }

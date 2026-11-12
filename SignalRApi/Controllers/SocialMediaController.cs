@@ -60,7 +60,7 @@ namespace SignalRApi.Controllers
         {
             var value = _socialMediaService.TGetById(id);
 
-            return Ok(value);
+            return Ok(_mapper.Map<GetSocialMediaDto>(value));
         }
     }
 }

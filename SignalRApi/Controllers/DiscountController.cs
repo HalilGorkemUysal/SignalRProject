@@ -49,7 +49,6 @@ namespace SignalRApi.Controllers
         [HttpPut]
         public IActionResult UpdateDiscount(UpdateDiscountDto updateDiscountDto)
         {
-            updateDiscountDto.Status = false;
             var value = _mapper.Map<Discount>(updateDiscountDto);
 
             _discountService.TUpdate(value);
@@ -61,7 +60,7 @@ namespace SignalRApi.Controllers
         {
             var value = _discountService.TGetById(id);
 
-            return Ok(value);
+            return Ok(_mapper.Map<GetDiscountDto>(value));
         }
 
         [HttpGet("ChangeStatusToFalse/{id}")]

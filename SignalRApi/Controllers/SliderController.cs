@@ -60,7 +60,7 @@ namespace SignalRApi.Controllers
         {
             var value = _sliderService.TGetById(id);
 
-            return Ok(value);
+            return Ok(_mapper.Map<GetSliderDto>(value));
         }
     }
 }

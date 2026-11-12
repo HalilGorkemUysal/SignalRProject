@@ -60,7 +60,7 @@ namespace SignalRApi.Controllers
         {
             var value = _referenceService.TGetById(id);
 
-            return Ok(value);
+            return Ok(_mapper.Map<GetReferenceDto>(value));
         }
     }
 }

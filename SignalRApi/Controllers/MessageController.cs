@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.DtoLayer.MessageDto;
@@ -11,10 +12,12 @@ namespace SignalRApi.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;
+        private readonly IMapper _mapper;
 
-        public MessageController(IMessageService messageService)
+        public MessageController(IMessageService messageService, IMapper mapper)
         {
             _messageService = messageService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,22 +25,27 @@ namespace SignalRApi.Controllers
         {
             var values = _messageService.TGetListAll();
 
-            return Ok(values);
+            return Ok(_mapper.Map<List<ResultMessageDto>>(values));
         }
 
         [HttpPost]
         public IActionResult CreateMessage(CreateMessageDto createMessageDto)
         {
-            var message = new Message
-            {
-                Mail = createMessageDto.Mail,
-                Phone = createMessageDto.Phone,
-                MessageContent = createMessageDto.MessageContent,
-                Subject = createMessageDto.Subject,
-                MessageSendDate= createMessageDto.MessageSendDate,
-                NameSurname = createMessageDto.NameSurname,
-                Status = createMessageDto.Status
-            };
+            //var message = new Message
+            //{
+            //    Mail = createMessageDto.Mail,
+            //    Phone = createMessageDto.Phone,
+            //    MessageContent = createMessageDto.MessageContent,
+            //    Subject = createMessageDto.Subject,
+            //    MessageSendDate= createMessageDto.MessageSendDate,
+            //    NameSurname = createMessageDto.NameSurname,
+            //    Status = createMessageDto.Status
+            //};
+
+            createMessageDto.Status = false;
+            createMessageDto.MessageSendDate = DateTime.Now;
+
+            var message = _mapper.Map<Message>(createMessageDto);
 
             _messageService.TAdd(message);
 
@@ -56,18 +64,7 @@ namespace SignalRApi.Controllers
         [HttpPut]
         public IActionResult UpdateMessage(UpdateMessageDto updateMessageDto)
         {
-            var message = new Message
-            {
-                MessageId = updateMessageDto.MessageId,
-                Mail = updateMessageDto.Mail,
-                Phone = updateMessageDto.Phone,
-                MessageContent = updateMessageDto.MessageContent,
-                Subject = updateMessageDto.Subject,
-                MessageSendDate = updateMessageDto.MessageSendDate,
-                NameSurname = updateMessageDto.NameSurname,
-                Status = updateMessageDto.Status
-            };
-
+            var message = _mapper.Map<Message>(updateMessageDto);
 
             _messageService.TUpdate(message);
 
@@ -78,7 +75,7 @@ namespace SignalRApi.Controllers
         public IActionResult GetMessage(int id)
         {
             var value = _messageService.TGetById(id);
-            return Ok(value);
+            return Ok(_mapper.Map<GetByMessageDto>(value));
         }
     }
 }

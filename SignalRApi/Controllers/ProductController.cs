@@ -124,7 +124,7 @@ namespace SignalRApi.Controllers
         {
             var value = _productService.TGetById(id);
 
-            return Ok(value);
+            return Ok(_mapper.Map<GetProductDto>(value));
         }
     }
 
