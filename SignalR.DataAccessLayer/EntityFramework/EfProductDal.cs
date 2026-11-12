@@ -68,5 +68,11 @@ namespace SignalR.DataAccessLayer.EntityFramework
 
             return avgBurgerOPrice;
         }
+
+        public List<Product> GetLast9Products()
+        {
+            var products = _context.Products.Take(9).ToList();
+            return products;
+        }
     }
 }

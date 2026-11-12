@@ -20,5 +20,6 @@ namespace SignalR.BusinessLayer.Abstract
         string TProductNameByMinPrice();
 
         decimal TAvgPriceOfHamburgers();
+        List<Product> TGetLast9Products();
     }
 }

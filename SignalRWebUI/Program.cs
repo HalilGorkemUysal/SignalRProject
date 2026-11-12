@@ -25,11 +25,19 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 // AddIdentity'den SONRA yapılandır
 builder.Services.ConfigureApplicationCookie(opts =>
 {
-    opts.LoginPath = "/Login/Index";
-    opts.AccessDeniedPath = "/Login/AccessDenied";
+    opts.LoginPath = "/Login/Index";// 401 - Giriş gerekli
+    opts.AccessDeniedPath = "/Login/AccessDenied";// 403 - Yetki yok
 });
 
 var app = builder.Build();
+
+app.UseStatusCodePages(async x =>
+{
+    if(x.HttpContext.Response.StatusCode == 404)
+    {
+        x.HttpContext.Response.Redirect("/Error/NotFound404Page");
+    }
+});
 
 if (!app.Environment.IsDevelopment())
 {
