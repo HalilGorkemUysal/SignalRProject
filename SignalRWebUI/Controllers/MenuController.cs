@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SignalRWebUI.Dtos.BasketDtos;
+using SignalRWebUI.Dtos.CategoryDtos;
 using SignalRWebUI.Dtos.ProductDtos;
 using System.Text;
 
@@ -51,6 +52,9 @@ namespace SignalRWebUI.Controllers
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             var responseMessage = await client.PostAsync("https://localhost:7067/api/Basket/", stringContent);
+
+            var client2 = _httpClientFactory.CreateClient();
+            await client2.GetAsync("https://localhost:7067/api/MenuTables/ChangeMenuTableStatusToTrue/"+menuTableId);
 
             if (responseMessage.IsSuccessStatusCode)
             {
