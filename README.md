@@ -1,76 +1,87 @@
 <div align="center">
 
-# ⚡ SignalR Restaurant Management
+# ⚡ SignalR Restaurant
 
-### ASP.NET Core SignalR ile Gerçek Zamanlı Restoran Yönetimi
+### ASP.NET Core SignalR ile Gerçek Zamanlı Restoran Yönetimi ve Canlı İletişim
 
-**Bu projenin temel amacı, ASP.NET Core SignalR teknolojisini gerçek bir restoran senaryosunda uygulamak; sunucu ve istemciler arasında çift yönlü, anlık veri iletişimini deneyimlemektir.**
+**Bu projenin asıl amacı, ASP.NET Core SignalR teknolojisini uygulamalı olarak öğrenmek ve gerçek senaryolarda istemci–sunucu arasında çift yönlü, eş zamanlı veri iletişimi kurmaktır.** Restoran otomasyonu; sohbet, canlı istatistik, bildirim ve masa yönetimi gibi SignalR senaryolarını göstermek için geliştirilmiştir.
 
-![.NET 6](https://img.shields.io/badge/.NET-6.0-512BD4?logo=dotnet&logoColor=white)
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC%20%2B%20Web%20API-512BD4)
-![SignalR](https://img.shields.io/badge/SignalR-Real--Time-00A4EF)
-![EF Core](https://img.shields.io/badge/EF%20Core-6.0-512BD4)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-CC2927?logo=microsoftsqlserver&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-6.0-512BD4?logo=dotnet&logoColor=white)
+![SignalR](https://img.shields.io/badge/ASP.NET_Core-SignalR-0B70B7)
+![Architecture](https://img.shields.io/badge/Architecture-N--Layer-334155)
+![EF Core](https://img.shields.io/badge/EF_Core-6.0-512BD4)
+![SQL Server](https://img.shields.io/badge/Database-SQL_Server-CC2927)
+![MVC](https://img.shields.io/badge/Frontend-ASP.NET_Core_MVC-6366F1)
 
-[🔌 SignalR Özellikleri](#-signalr-ile-neler-yapılıyor) · [🖼️ Görseller](#️-proje-görselleri) · [🏗️ Mimari](#️-proje-mimarisi) · [🚀 Kurulum](#-kurulum-ve-çalıştırma)
+[**💬 Canlı Mesajlaşma**](#-1-canlı-mesajlaşma--signalrın-en-net-örneği) · [**📊 Anlık İstatistikler**](#-2-anlık-istatistikler-ve-göstergeler) · [**🔔 Diğer SignalR Senaryoları**](#-3-diğer-signalr-senaryoları) · [**📷 Ekran Görüntüleri**](#-proje-ekran-görüntüleri) · [**🚀 Kurulum**](#-kurulum-ve-çalıştırma)
 
-<img src="SignalRWebUI/wwwroot/feane-v1.0.0/images/hero-bg.jpg" alt="Restoran arayüzünde kullanılan kapak görseli" width="850" />
+<img src="docs/screenshots/homepage.png" alt="SignalR Restaurant ana sayfası" width="880" />
 
-<sub>Kapak görseli, projenin mevcut restoran arayüzü varlıklarından alınmıştır; çalışan uygulama ekran görüntüsü değildir.</sub>
+<sub>Gerçek uygulama ekran görüntüsü · ASP.NET Core MVC arayüzü</sub>
 
 </div>
 
 ---
 
-## 🎯 Projenin Amacı
+## 🎯 Neden Bu Proje?
 
-Bu çalışma, yalnızca bir restoran otomasyonu geliştirmekten ziyade **SignalR Hub–Client iletişimini, sunucudan istemciye yayın yapmayı ve birden fazla istemcinin eşzamanlı güncellenmesini öğrenmeye** odaklanır. Restoran yönetim senaryosu ise bu iletişimi somutlaştırmak için kullanılmıştır.
+SignalR, tarayıcı ve sunucu arasında kalıcı bir bağlantı üzerinden **sunucunun istemcilere veri göndermesini** ve **istemcilerin Hub metotlarını çağırmasını** sağlar. Bu projede bu yaklaşım tek bir sohbet örneğiyle sınırlı kalmaz; restoranın yönetim ve müşteri ekranlarına da uyarlanır.
 
-SignalR'ın kullanıldığı örnekler: **canlı istatistik panelleri, masa dolu/boş durumları, okunmamış bildirimler, rezervasyon listeleri, anlık mesajlaşma ve çevrimiçi bağlantı sayısı.**
+- **Çift yönlü iletişim:** Tarayıcıdan Hub'a mesaj gönderme ve Hub'dan tüm bağlı istemcilere yayın yapma.
+- **Çoklu istemci senaryosu:** Aynı sohbetin iki farklı tarayıcıda eş zamanlı gösterilmesi.
+- **Canlı yönetim ekranları:** İstatistikler, göstergeler, rezervasyonlar, bildirimler ve masa durumlarının SignalR üzerinden güncellenmesi.
+- **Bağlantı yaşam döngüsü:** İstemci bağlandığında/ayrıldığında aktif bağlantı sayısının yayınlanması.
 
-> [!NOTE]
-> Bu projede bazı ekranlar, belirli aralıklarla Hub metotlarını `invoke` ederek veriyi talep eder (örneğin istatistikler 1 saniyede, masa durumları ve bildirimler 2 saniyede bir). Hub, sonuçları `Clients.All.SendAsync(...)` ile bağlı istemcilere yayınlar. Yani güncel uygulamadaki tüm yenilemeler veri değişiminde otomatik tetiklenen olay tabanlı yayınlar değildir.
+> [!IMPORTANT]
+> **Teknik ayrıntı:** Sohbet ve bağlantı sayısı SignalR olaylarıyla anlık yayınlanır. İstatistik, rezervasyon, bildirim ve masa ekranlarında ise JavaScript belirli aralıklarla `connection.invoke(...)` çağırır; Hub güncel veriyi `Clients.All.SendAsync(...)` ile yayınlar. Bu nedenle mevcut sürümde tüm ekranlar veritabanı değişikliğini doğrudan dinleyen, tamamen olay-tetiklemeli bir mimaride değildir.
 
-## 🔌 SignalR ile Neler Yapılıyor?
+## 🔌 SignalR Nerelerde Kullanılıyor?
 
-| Senaryo | Hub metodu | İstemciye yayınlanan olay | Kullanım amacı |
-| --- | --- | --- | --- |
-| 📊 Canlı istatistikler | `SendStatistics` | `ReceiveCategoryCount`, `ReceiveProductCount`, `ReceiveTotalOrderCount` vb. | Kategori, ürün, sipariş, kasa ve fiyat verilerini görüntüleme |
-| 📈 Anlık göstergeler | `SendProgress` | `ReceiveActiveOrderCount`, `ReceiveMenuTableCount` vb. | Yönetim ekranındaki gösterge verilerini güncelleme |
-| 🪑 Masa durumları | `SendMenuTable` | `ReceiveMenuTables` | Masaların dolu/boş bilgilerini yayınlama |
-| 🔔 Bildirimler | `SendNotifications` | `ReceiveNotificationCountByFalse`, `ReceiveNotificationListByFalse` | Okunmamış bildirim sayısını ve listesini gösterme |
-| 📅 Rezervasyonlar | `SendBookingList` | `ReceiveBookingList` | Rezervasyon listesini bağlı istemcilere iletme |
-| 💬 Anlık mesajlaşma | `SendMessage(user, message)` | `ReceiveMessage` | Kullanıcı mesajlarını tüm bağlı istemcilere yayınlama |
-| 👥 Bağlı istemciler | `OnConnectedAsync`, `OnDisconnectedAsync` | `ReceiveClientCount` | Aktif bağlantı sayısını yayınlama |
+| SignalR senaryosu | Hub metodu / sunucu olayı | JavaScript'in dinlediği olay | Kodda kullanıldığı yer |
+|:--|:--|:--|:--|
+| 💬 Anlık mesajlaşma | `SendMessage(user, message)` | `ReceiveMessage` | `wwwroot/js/chat.js` |
+| 📊 Canlı istatistikler | `SendStatistics` | `ReceiveCategoryCount`, `ReceiveProductCount`, `ReceiveTotalOrderCount` ve diğerleri | `Views/Statistic/Index.cshtml` |
+| 📈 Canlı göstergeler | `SendProgress` | `ReceiveActiveOrderCount`, `ReceiveMenuTableCount` ve diğerleri | `Views/ProgressBars/Index.cshtml` |
+| 🪑 Yönetim panelinde masa durumları | `SendMenuTable` | `ReceiveMenuTables` | `Views/MenuTables/TableListByStatus.cshtml` |
+| 🔔 Bildirimler | `SendNotifications` | `ReceiveNotificationCountByFalse`, `ReceiveNotificationListByFalse` | `Views/Shared/Components/AdminLayoutNavbar/Default.cshtml` |
+| 📅 Rezervasyon listesi | `SendBookingList` | `ReceiveBookingList` | `Views/Booking/Index.cshtml` |
+| 👥 Bağlı istemci sayısı | `OnConnectedAsync` / `OnDisconnectedAsync` | `ReceiveClientCount` | `Views/Message/ClientUserCount.cshtml` |
+
+**Merkezi Hub:** [`SignalRApi/Hubs/SignalRHub.cs`](SignalRApi/Hubs/SignalRHub.cs)  
+**Hub adresi:** `/signalrhub` (API geliştirme profilinde `https://localhost:7067/signalrhub`)
+
+---
+
+## 💬 1. Canlı Mesajlaşma — SignalR'ın En Net Örneği
+
+Bu uygulamanın gerçek zamanlı iletişimi en görünür biçimde gösteren bölümü **çoklu istemcili sohbet ekranıdır.** İki farklı tarayıcıda açık olan sohbet sayfalarından birinde gönderilen mesaj, sayfa yenilemeye gerek olmadan diğerinde de görüntülenir. Ekran görüntüsünde müşteri ile restoran yöneticisinin aynı konuşmayı eş zamanlı gördüğü senaryo yer alır.
+
+<div align="center">
+<img src="docs/screenshots/realtime-chat.png" alt="İki tarayıcıda SignalR ile eş zamanlı mesajlaşma" width="960" />
+<br/>
+<sub>Gerçek uygulama: müşteri ve restoran yöneticisi arasında eş zamanlı sohbet</sub>
+</div>
+
+**Mesajın izlediği yol:** `Kullanıcı → connection.invoke("SendMessage", ...) → SignalRHub → Clients.All.SendAsync("ReceiveMessage", ...) → Tüm bağlı sohbet istemcileri`
 
 <details>
-<summary><b>🔎 SignalR iletişim akışını göster</b></summary>
+<summary><b>🔍 Sohbetin işleyişini adım adım göster</b></summary>
 
-```mermaid
-sequenceDiagram
-    participant C as Tarayıcı / JavaScript İstemci
-    participant H as ASP.NET Core SignalR Hub
-    participant S as Business / Data Access
-    participant O as Diğer bağlı istemciler
-    C->>H: connection.start()
-    C->>H: invoke("SendStatistics")
-    H->>S: İstatistikleri sorgula
-    S-->>H: Güncel veriler
-    H-->>C: ReceiveCategoryCount / ...
-    H-->>O: ReceiveCategoryCount / ...
-    C->>H: invoke("SendMessage", user, message)
-    H-->>C: ReceiveMessage
-    H-->>O: ReceiveMessage
-```
+1. Tarayıcı `HubConnectionBuilder` ile `/SignalRHub` adresine bağlanır.
+2. `connection.start()` başarılı olduğunda mesaj gönderme düğmesi kullanılabilir olur.
+3. Gönderen kullanıcı adı ve mesajı `connection.invoke("SendMessage", user, message)` ile Hub'a iletilir.
+4. Hub `Clients.All.SendAsync("ReceiveMessage", user, message)` çağrısıyla mesajı tüm bağlı istemcilere dağıtır.
+5. Her istemci `connection.on("ReceiveMessage", ...)` ile mesajı alır ve sayfadaki mesaj listesine ekler.
+6. Görünen saat, istemcide mesaj alındığında JavaScript tarafından hesaplanır.
 
-**Önemli:** SignalR, istemci ve sunucu arasında kalıcı iletişim kurar; mevcut istatistik ekranında ise istemci belirli aralıklarla verinin yayınlanmasını ayrıca ister.
+Bu uygulamadaki sohbet **tüm bağlı istemcilere yayın** yapar; özel mesaj/oda ayrımı ve kalıcı mesaj geçmişi bu kod parçasında uygulanmamıştır.
 
 </details>
 
 <details>
-<summary><b>💻 Gerçek projeden Hub ve JavaScript örneğini göster</b></summary>
+<summary><b>💻 Gerçek kod: Hub tarafında SendMessage</b></summary>
 
-**Sunucu tarafı — `SignalRApi/Hubs/SignalRHub.cs` içindeki mesajlaşma:**
+[`SignalRApi/Hubs/SignalRHub.cs`](SignalRApi/Hubs/SignalRHub.cs):
 
 ```csharp
 public async Task SendMessage(string user, string message)
@@ -79,215 +90,398 @@ public async Task SendMessage(string user, string message)
 }
 ```
 
-**İstemci tarafı — `SignalRWebUI/wwwroot/js/chat.js` yapısından örnek:**
-
-```javascript
-const connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7067/SignalRHub")
-    .build();
-
-connection.on("ReceiveMessage", (user, message) => {
-    console.log(`${user}: ${message}`);
-});
-
-connection.start().catch(console.error);
-
-// Bağlantı kurulduktan sonra çağrılır:
-// connection.invoke("SendMessage", "Kullanıcı", "Merhaba!");
-```
-
-> Yukarıdaki JavaScript kodu, projedeki bağlantı ve olay yakalama mantığının sadeleştirilmiş gösterimidir. Tam uygulamayı `chat.js` dosyasında inceleyebilirsiniz.
-
-</details>
-
-## 🖼️ Proje Görselleri
-
-<details open>
-<summary><b>🍔 Restoran arayüzü ve ürün görsellerini aç / kapat</b></summary>
-
-<p align="center">
-  <img src="SignalRWebUI/wwwroot/feane-v1.0.0/images/about-img.png" alt="Restoran arayüzünde kullanılan görsel" width="260" />
-  <img src="SignalRWebUI/wwwroot/feane-v1.0.0/images/f1.png" alt="Menüde kullanılan ürün görseli 1" width="220" />
-  <img src="SignalRWebUI/wwwroot/feane-v1.0.0/images/f2.png" alt="Menüde kullanılan ürün görseli 2" width="220" />
-</p>
-
-<sub>Bu görseller depoda bulunan statik arayüz varlıklarıdır; canlı istatistik veya sohbet ekranının ekran görüntüleri değildir.</sub>
+`Clients.All` kullanımı nedeniyle bir mesaj yalnızca gönderen kullanıcıya değil, Hub'a bağlı tüm istemcilere yayınlanır.
 
 </details>
 
 <details>
-<summary><b>📸 Canlı SignalR ekranları: nerelerde bulunuyor?</b></summary>
+<summary><b>💻 Gerçek kod: JavaScript bağlantısı, mesaj alma ve gönderme</b></summary>
 
-Gerçek çalışan uygulama ekranlarını görmek için projeyi başlattıktan sonra aşağıdaki MVC sayfalarını ziyaret edebilirsiniz:
+[`SignalRWebUI/wwwroot/js/chat.js`](SignalRWebUI/wwwroot/js/chat.js) içindeki işleyişten seçilmiş kod:
 
-| Ekran | Projedeki görünüm | SignalR işlevi |
-| --- | --- | --- |
-| Canlı istatistik paneli | `Views/Statistic/Index.cshtml` | Anlık KPI ve istatistik değerleri |
-| İlerleme / gösterge paneli | `Views/ProgressBars/Index.cshtml` | Hub verileriyle güncellenen göstergeler |
-| Masa durumları | `Views/MenuTables/TableListByStatus.cshtml` | Dolu / boş masa bilgileri |
-| Mesajlaşma | `Views/Message/Index.cshtml` | Gerçek zamanlı sohbet |
-| Bağlı istemciler | `Views/Message/ClientUserCount.cshtml` | Aktif bağlantı sayısı |
-| Bildirim alanı | `Views/Shared/Components/AdminLayoutNavbar/Default.cshtml` | Okunmamış bildirimler |
+```javascript
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("https://localhost:7067/SignalRHub")
+    .build();
 
-> Depoda bu ekranlara ait hazır screenshot dosyaları bulunmadığından, mevcut olmayan görüntüler yerine gerçek kaynak dosyalara yönlendirme yapıldı. Sonradan alınacak ekran görüntüleri `docs/images/` altında saklanarak bu bölüme eklenebilir.
+document.getElementById("sendbutton").disabled = true;
+
+connection.on("ReceiveMessage", function (user, message) {
+    var currentTime = new Date();
+    var currentHour = currentTime.getHours();
+    var currentMinute = String(currentTime.getMinutes()).padStart(2, "0");
+
+    var li = document.createElement("li");
+    var span = document.createElement("span");
+    span.style.fontWeight = "bold";
+    span.textContent = user;
+    li.appendChild(span);
+    li.appendChild(document.createTextNode(
+        ` : ${message} - ${currentHour}:${currentMinute}`
+    ));
+    document.getElementById("messagelist").appendChild(li);
+});
+
+connection.start().then(function () {
+    document.getElementById("sendbutton").disabled = false;
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+document.getElementById("sendbutton").addEventListener("click", function (event) {
+    var user = document.getElementById("userinput").value;
+    var message = document.getElementById("messageinput").value;
+    connection.invoke("SendMessage", user, message)
+        .catch(function (err) { return console.error(err.toString()); });
+    event.preventDefault();
+});
+```
+
+Sohbetin Razor arayüzü: [`Views/Message/Index.cshtml`](SignalRWebUI/Views/Message/Index.cshtml).
 
 </details>
+
+<details>
+<summary><b>🧭 Mesajlaşma akış diyagramını aç</b></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Müşteri Tarayıcısı
+    participant H as SignalRHub
+    participant B as Yönetici Tarayıcısı
+    A->>H: connection.start()
+    B->>H: connection.start()
+    A->>H: invoke("SendMessage", user, message)
+    H-->>A: ReceiveMessage(user, message)
+    H-->>B: ReceiveMessage(user, message)
+    B->>H: invoke("SendMessage", admin, cevap)
+    H-->>A: ReceiveMessage(admin, cevap)
+    H-->>B: ReceiveMessage(admin, cevap)
+```
+
+</details>
+
+---
+
+## 📊 2. Anlık İstatistikler ve Göstergeler
+
+**SignalR yalnızca mesajlaşma için değil, yönetim panellerinde verilerin canlı gösterilmesi için de kullanılıyor.** İstatistik ekranında kategori sayısı, ürün sayısı, aktif/pasif kategoriler, ürün fiyatları, siparişler, kasa tutarı ve masa sayısı gibi veriler Hub aracılığıyla istemciye aktarılır.
+
+<div align="center">
+<img src="docs/screenshots/live-statistics.png" alt="SignalR canlı istatistik yönetim paneli" width="960" />
+<br/>
+<sub>Gerçek uygulama: SignalR ile beslenen 16 istatistik kartı</sub>
+</div>
+
+<details>
+<summary><b>🔍 İstatistik yayınlarının nasıl çalıştığını göster</b></summary>
+
+`Views/Statistic/Index.cshtml` içinde bağlantı başlatıldıktan sonra **her 1 saniyede** `SendStatistics` Hub metodu çağrılır:
+
+```javascript
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("https://localhost:7067/SignalRHub")
+    .build();
+
+connection.start().then(() => {
+    setInterval(() => {
+        connection.invoke("SendStatistics");
+    }, 1000);
+});
+
+connection.on("ReceiveCategoryCount", (value) => {
+    $("#categorycount").text(value);
+});
+
+connection.on("ReceiveProductCount", (value) => {
+    $("#productcount").text(value);
+});
+```
+
+Hub tarafında servislerden okunan veriler farklı `Receive...` olayları üzerinden tüm bağlı istemcilere gönderilir. Örneğin:
+
+```csharp
+public async Task SendStatistics()
+{
+    var value = _categoryService.TCategoryCount();
+    await Clients.All.SendAsync("ReceiveCategoryCount", value);
+
+    var value2 = _productService.TProductCount();
+    await Clients.All.SendAsync("ReceiveProductCount", value2);
+
+    // Diğer istatistikler de ilgili Receive... olaylarıyla yayınlanır.
+}
+```
+
+Benzer şekilde `Views/ProgressBars/Index.cshtml` içinde `SendProgress` metodu **1 saniyelik aralıklarla** çağrılarak göstergeler güncellenir.
+
+</details>
+
+---
+
+## 🔔 3. Diğer SignalR Senaryoları
+
+<details>
+<summary><b>🪑 Masa doluluk durumları — ReceiveMenuTables</b></summary>
+
+Yönetim panelindeki `Views/MenuTables/TableListByStatus.cshtml`, **2 saniyede bir** `SendMenuTable` çağırır. Hub `_menuTableService.TGetListAll()` ile masaları alıp `ReceiveMenuTables` olayına yayınlar. İstemci masa kartlarını dolu/boş durumlarına göre yeniden oluşturur.
+
+```csharp
+public async Task SendMenuTable()
+{
+    var values = _menuTableService.TGetListAll();
+    await Clients.All.SendAsync("ReceiveMenuTables", values);
+}
+```
+
+<img src="docs/screenshots/customer-tables.png" alt="Müşteri tarafında masa seçimi ve dolu boş durumları" width="850" />
+
+> **Ekran ayrımı:** Görseldeki müşteri masa seçim ekranı `Views/CustomerTable/CustomerTableList.cshtml` içinde **Razor ile sunucu tarafında** oluşturulur. SignalR üzerinden güncellenen masa kartları ise ayrı bir yönetim ekranı olan `Views/MenuTables/TableListByStatus.cshtml` içindedir. Bu görsel, masa yönetimi özelliğinin müşteri arayüzünü göstermektedir.
+
+</details>
+
+<details>
+<summary><b>🔔 Canlı bildirim sayısı ve listesi — ReceiveNotification...</b></summary>
+
+Yönetim panelinin üst menüsündeki `AdminLayoutNavbar` bileşeni **2 saniyede bir** `SendNotifications` çağırır. Hub, okunmamış bildirimlerin sayısını ve listesini yayınlar:
+
+```csharp
+public async Task SendNotifications()
+{
+    var values = _notificationService.TNotificationCountByStatusFalse();
+    await Clients.All.SendAsync("ReceiveNotificationCountByFalse", values);
+
+    var values2 = _notificationService.TGetAllNotificationByFalse();
+    await Clients.All.SendAsync("ReceiveNotificationListByFalse", values2);
+}
+```
+
+İstemci `ReceiveNotificationCountByFalse` ile bildirim rozetini, `ReceiveNotificationListByFalse` ile açılır bildirim listesini günceller. Örneğin istatistik ekran görüntüsünün üst köşesinde bildirim rozeti görülebilir.
+
+</details>
+
+<details>
+<summary><b>📅 Rezervasyon listesinin güncellenmesi — ReceiveBookingList</b></summary>
+
+`Views/Booking/Index.cshtml` ekranında **2 saniyelik aralıklarla** `SendBookingList` çağrılır. Hub rezervasyon listesini servis katmanından alıp `ReceiveBookingList` olayıyla yayınlar. JavaScript bu veriden yeni bir HTML tablo oluşturur. Liste onaylama, iptal etme ve güncelleme işlemleri için bağlantılar içerir.
+
+```csharp
+public async Task SendBookingList()
+{
+    var values = _bookingService.TGetListAll();
+    await Clients.All.SendAsync("ReceiveBookingList", values);
+}
+```
+
+Bu yöntem, açık rezervasyon listesinin yeniden sayfa yüklenmeden güncellenmesini sağlar.
+
+</details>
+
+<details>
+<summary><b>👥 Bağlanan ve ayrılan istemcilerin sayısı — ReceiveClientCount</b></summary>
+
+`SignalRHub` bağlantı yaşam döngüsü metotlarını ezerek istemci sayısını yayınlar:
+
+```csharp
+public static int clientCount { get; set; } = 0;
+
+public override async Task OnConnectedAsync()
+{
+    clientCount++;
+    await Clients.All.SendAsync("ReceiveClientCount", clientCount);
+    await base.OnConnectedAsync();
+}
+
+public override async Task OnDisconnectedAsync(Exception? exception)
+{
+    clientCount--;
+    await Clients.All.SendAsync("ReceiveClientCount", clientCount);
+    await base.OnDisconnectedAsync(exception);
+}
+```
+
+`Views/Message/ClientUserCount.cshtml` tarafında `ReceiveClientCount` dinlenir. Bu sayı, mevcut kodda **bağlantı sayısıdır**, benzersiz kimliği doğrulanmış kullanıcı sayısı değildir; `static int` yaklaşımı tek sunucu içi örnek için uygundur, çoklu sunucu/senkronizasyon ve eşzamanlılık açısından geliştirme gerektirir.
+
+</details>
+
+---
+
+## 📷 Proje Ekran Görüntüleri
+
+Aşağıdaki görüntüler doğrudan çalışan uygulamadan alınmıştır. SignalR'ın belirgin olduğu sohbet ve istatistik ekranları yukarıda ayrıca öne çıkarılmıştır; diğerleri restoran senaryosunun kapsamını gösterir.
+
+<details>
+<summary><b>🏠 Restoran ana sayfasını göster</b></summary>
+
+<img src="docs/screenshots/homepage.png" alt="Restoran ana sayfası" width="900" />
+
+</details>
+
+<details>
+<summary><b>🍔 Ürün menüsünü göster</b></summary>
+
+<img src="docs/screenshots/menu.png" alt="Restoran menü ve ürün kartları" width="900" />
+
+</details>
+
+<details>
+<summary><b>🪑 Masa seçimi ekranını göster</b></summary>
+
+<img src="docs/screenshots/customer-tables.png" alt="Masa seçimi" width="900" />
+
+</details>
+
+<details>
+<summary><b>✉️ İletişim sayfasını göster</b></summary>
+
+<img src="docs/screenshots/contact.png" alt="İletişim formu ve harita" width="900" />
+
+</details>
+
+<details>
+<summary><b>⭐ Müşteri yorumlarını göster</b></summary>
+
+<img src="docs/screenshots/reviews.png" alt="Müşteri yorumları" width="900" />
+
+</details>
+
+<details>
+<summary><b>🍽️ Harici yemek tarifi API ekranını göster</b></summary>
+
+<img src="docs/screenshots/recipes-api.png" alt="Tasty API tarifleri" width="900" />
+
+Bu sayfa `FoodRapidApiController` üzerinden harici tarif API'sini kullanır; **SignalR özelliği değildir.**
+
+</details>
+
+---
 
 ## 🏗️ Proje Mimarisi
 
 <details>
-<summary><b>🧩 Katmanlı mimari şemasını göster</b></summary>
+<summary><b>🧩 Katmanlı mimariyi ve SignalR veri akışını göster</b></summary>
 
 ```mermaid
-flowchart TB
-    UI["SignalRWebUI<br/>ASP.NET Core MVC + JavaScript"]
-    API["SignalRApi<br/>REST Controllers + SignalRHub"]
-    BLL["SignalR.BusinessLayer<br/>Servisler / İş Kuralları"]
-    DAL["SignalR.DataAccessLayer<br/>EF Core + Repository"]
-    DB[("SQL Server<br/>SignalRDb")]
-    DTO["SignalR.DtoLayer<br/>DTO Modelleri"]
-    ENT["SignalR.EntityLayer<br/>Entity / Identity Modelleri"]
-    UI <-->|"HTTP API çağrıları"| API
-    UI <-->|"SignalR bağlantısı /signalrhub"| API
-    API --> BLL
-    API --> DTO
-    BLL --> DAL
-    DAL --> DB
-    DAL --> ENT
+flowchart TD
+    C[Tarayıcı / JavaScript] <-->|SignalR bağlantısı| H[SignalRApi / SignalRHub]
+    C <-->|HTTP / MVC| UI[SignalRWebUI / ASP.NET Core MVC]
+    UI <-->|HTTP| A[SignalRApi / REST Controllers]
+    H --> B[BusinessLayer / Servisler]
+    A --> B
+    B --> D[DataAccessLayer / EF Core]
+    D --> DB[(SQL Server)]
+    B --> E[EntityLayer / Modeller]
+    A --> DTO[DtoLayer]
 ```
+
+| Proje | Sorumluluk |
+| --- | --- |
+| `SignalRApi` | REST API, SignalR Hub, servis kayıtları, Swagger |
+| `SignalRWebUI` | MVC/Razor görünümler, JavaScript SignalR istemcileri, yönetim/müşteri ekranları |
+| `SignalR.BusinessLayer` | İş kuralları, servis arayüzleri ve Manager sınıfları |
+| `SignalR.DataAccessLayer` | Entity Framework Core, repository, SQL Server bağlamı ve migration'lar |
+| `SignalR.EntityLayer` | Varlık modelleri ve Identity sınıfları |
+| `SignalR.DtoLayer` | API veri aktarım nesneleri |
 
 </details>
 
 <details>
-<summary><b>📂 Solution ve katmanların görevlerini göster</b></summary>
+<summary><b>🔧 SignalR yapılandırmasını göster</b></summary>
 
-```text
-SignalRProject.slnx
-├── SignalRApi/                 # Web API, REST controller'lar, SignalRHub
-├── SignalRWebUI/               # MVC arayüzü, Razor Views, SignalR JS istemcileri
-├── SignalR.BusinessLayer/      # Servis arayüzleri ve iş mantığı
-├── SignalR.DataAccessLayer/    # EF Core, DbContext, repository, migrations
-├── SignalR.DtoLayer/           # Veri aktarım modelleri
-└── SignalR.EntityLayer/        # Veritabanı varlıkları ve Identity sınıfları
+[`SignalRApi/Program.cs`](SignalRApi/Program.cs) içinde:
+
+```csharp
+builder.Services.AddSignalR();
+
+// ... middleware ve diğer servisler ...
+
+app.MapHub<SignalRHub>("/signalrhub");
 ```
+
+Hub kodu: [`SignalRApi/Hubs/SignalRHub.cs`](SignalRApi/Hubs/SignalRHub.cs). İstemci örnekleri: [`Views/Statistic/Index.cshtml`](SignalRWebUI/Views/Statistic/Index.cshtml), [`chat.js`](SignalRWebUI/wwwroot/js/chat.js).
 
 </details>
 
-## 🛠️ Kullanılan Teknolojiler
+## 🧰 Kullanılan Teknolojiler
 
-| Alan | Teknoloji |
-| --- | --- |
-| Gerçek zamanlı iletişim | **ASP.NET Core SignalR** |
-| Backend | ASP.NET Core Web API (**.NET 6**) |
-| Frontend | ASP.NET Core MVC / Razor Views, JavaScript, jQuery |
-| Veri erişimi | Entity Framework Core 6, SQL Server |
-| Kimlik doğrulama | ASP.NET Core Identity |
-| Veri aktarımı / eşleme | DTO, AutoMapper |
-| Doğrulama | FluentValidation |
-| API dokümantasyonu | Swagger / Swashbuckle |
-| Arayüz | Bootstrap ve mevcut restoran / yönetim şablonları |
+<details>
+<summary><b>🛠️ Teknoloji yığınını aç</b></summary>
+
+- **.NET 6 / ASP.NET Core Web API / ASP.NET Core MVC**
+- **ASP.NET Core SignalR** ve JavaScript SignalR istemcisi
+- **Entity Framework Core 6 / SQL Server / Code First migrations**
+- **ASP.NET Core Identity**
+- **Katmanlı mimari, Repository ve Service yaklaşımı**
+- **AutoMapper, FluentValidation, Swagger / OpenAPI**
+- **Razor Views, JavaScript, jQuery, Bootstrap**
+- **Harici yemek tarifi API'si, QR kod ve e-posta özellikleri** (SignalR dışındaki uygulama bileşenleri)
+
+</details>
 
 ## 🚀 Kurulum ve Çalıştırma
 
 <details>
-<summary><b>1️⃣ Gereksinimler ve projeyi indirme</b></summary>
+<summary><b>📦 Gereksinimleri ve kurulum komutlarını göster</b></summary>
 
-- .NET **6 SDK** (projenin mevcut hedef framework'ü; .NET 6 artık destek dışıdır, güncelleme önerilir)
-- SQL Server veya SQL Server Express
-- Visual Studio ya da .NET CLI
+**Gereksinimler:** .NET 6 SDK, SQL Server ve uygun bir geliştirme ortamı (Visual Studio / VS Code). Proje dosyaları `net6.0` hedefliyor; .NET 6 artık destek süresi sona ermiş bir sürüm olduğundan yeni dağıtımlarda yükseltme planlanmalıdır.
+
+**1. Depoyu klonlayın:**
 
 ```bash
 git clone https://github.com/HalilGorkemUysal/SignalRProject.git
 cd SignalRProject
-dotnet restore SignalRProject.slnx
 ```
 
-> `.slnx` çözüm dosyası için bu formatı destekleyen güncel SDK / IDE kullanılmalıdır. Alternatif olarak proje `.csproj` dosyaları üzerinden ayrı ayrı çalıştırılabilir.
+**2. Veritabanı bağlantısını yerel ortamınıza göre düzenleyin.** Mevcut kaynakta `SignalR.DataAccessLayer/Concrete/SignalRContext.cs` içindeki `OnConfiguring` metodu bir SQL Server bağlantı dizesi içerir. Sunucu adını kendi SQL Server kurulumunuza göre değiştirmeniz gerekir. Üretim ortamında bu ayarı kaynak kod yerine güvenli yapılandırma / secrets üzerinden yönetmek daha uygundur.
 
-</details>
-
-<details>
-<summary><b>2️⃣ Veritabanı bağlantısını yapılandırma</b></summary>
-
-`SignalR.DataAccessLayer/Concrete/SignalRContext.cs` dosyasındaki `OnConfiguring` metodu, geliştirme makinesine özgü bir SQL Server bağlantı dizesi kullanıyor. Çalıştırmadan önce bağlantıyı **kendi SQL Server ortamınıza göre** düzenleyin.
-
-```csharp
-optionsBuilder.UseSqlServer(
-    "Server=YOUR_SERVER;Database=SignalRDb;Trusted_Connection=True;TrustServerCertificate=True;");
-```
-
-Bu yalnızca **yerel geliştirme için örnek** bir bağlantı dizesidir. Gerçek dağıtımlarda bağlantı bilgilerini kaynak kod yerine yapılandırma veya gizli bilgi yönetimi üzerinden sağlayın.
-
-Veritabanı migration'larını uygulamak için:
+**3. Migration'ları uygulayın:**
 
 ```bash
-dotnet tool install --global dotnet-ef --version 6.0.30
 dotnet ef database update --project SignalR.DataAccessLayer --startup-project SignalRApi
 ```
 
-> `dotnet-ef` zaten yüklüyse uygun sürüme güncelleyebilirsiniz. Migration sırasında bağlantı ayarlarının doğru olduğundan emin olun.
+`dotnet ef` kurulu değilse önce EF Core CLI aracını kurun. EF Core CLI'da hedef proje ve startup projesi birlikte seçilir.
 
-</details>
-
-<details>
-<summary><b>3️⃣ API ve MVC uygulamasını başlatma</b></summary>
-
-**Terminal 1 — API:**
+**4. API ve MVC uygulamasını iki ayrı terminalde başlatın:**
 
 ```bash
 dotnet run --project SignalRApi --launch-profile SignalRApi
 ```
 
-**Terminal 2 — Web UI:**
-
 ```bash
 dotnet run --project SignalRWebUI --launch-profile SignalRWebUI
 ```
 
-Depodaki `launchSettings.json` dosyalarına göre geliştirme adresleri:
+Depodaki geliştirme profillerine göre:
 
-| Servis | Varsayılan adres |
+| Hizmet | Yerel URL |
 | --- | --- |
-| API | `https://localhost:7067` |
-| Swagger (Development) | `https://localhost:7067/swagger` |
+| REST API / Swagger | `https://localhost:7067/swagger` |
 | SignalR Hub | `https://localhost:7067/signalrhub` |
 | MVC arayüzü | `https://localhost:7092` |
 
-**Dikkat:** SignalR JavaScript istemcileri API'ye `https://localhost:7067/SignalRHub` üzerinden bağlanacak şekilde yazılmıştır. API portunu değiştirirseniz istemci URL'lerini de düzenleyin. HTTPS geliştirme sertifikası gerekiyorsa `dotnet dev-certs https --trust` kullanılabilir.
+**5. Sohbeti deneyin:** MVC arayüzündeki mesajlaşma sayfasını (`/Message/Index`) iki farklı tarayıcı sekmesinde açın. İki taraftan da mesaj gönderip diğer ekrandaki güncellemeyi gözlemleyin.
 
-> `SignalRWebUI.csproj` dosyasında `QRCoder.dll` için geliştiricinin yerel `Downloads` klasörüne işaret eden bir referans var. Farklı bir bilgisayarda derleme sorunu yaşanırsa bu referansın taşınabilir bir NuGet paketine veya projeye dahil edilmiş DLL'e dönüştürülmesi gerekebilir.
-
-</details>
-
-## 🧠 Öğrenilen / Gösterilen SignalR Kavramları
-
-<details>
-<summary><b>📚 Teknik kazanımları göster</b></summary>
-
-- `Hub` sınıfı ve `MapHub<SignalRHub>("/signalrhub")` endpoint eşlemesi
-- `HubConnectionBuilder` ile JavaScript istemci bağlantısı
-- `connection.start()` ile bağlantıyı başlatma
-- `connection.invoke(...)` ile sunucudaki Hub metodunu çağırma
-- `connection.on(...)` ile istemcide olay dinleme
-- `Clients.All.SendAsync(...)` ile bağlı istemcilere yayın yapma
-- `OnConnectedAsync` ve `OnDisconnectedAsync` ile bağlantı yaşam döngüsünü izleme
-- SignalR'dan gelen verileri sayfayı yeniden yüklemeden DOM üzerinde gösterme
+> [!WARNING]
+> `SignalRWebUI.csproj`, QRCoder kütüphanesine geliştiricinin bilgisayarındaki **mutlak/yerel dosya yoluyla** referans veriyor. Bu dosya başka bilgisayarda bulunmayabilir ve derlemeyi engelleyebilir. Referansı taşınabilir bir NuGet paket bağımlılığına dönüştürmek gerekebilir. Ayrıca SQL Server sunucu adı ve yerel HTTPS sertifikası ayarlarını kontrol edin.
 
 </details>
 
-## 🔍 Geliştirme Notları
+## 📝 Teknik Notlar ve Geliştirme Fikirleri
 
 <details>
-<summary><b>🧰 İyileştirme önerilerini göster</b></summary>
+<summary><b>🧪 Kod incelemesinden çıkan notları ve sonraki adımları göster</b></summary>
 
-Bu maddeler mevcut projede tamamlanmış özellikler değil, kod incelemesinden çıkan geliştirme fikirleridir:
+Bu maddeler **mevcut sürümde uygulanmış özellikler değil**, kodu geliştirirken değerlendirilebilecek önerilerdir:
 
-1. **Gerçek push modeli:** İstatistikleri her saniye Hub üzerinden sorgulamak yerine, veri değişikliklerinde ilgili istemcilere yayın yapma.
-2. **Bağlantı dayanıklılığı:** JavaScript istemcilerine `withAutomaticReconnect()` ve bağlantı hata/yeniden bağlanma yönetimi ekleme.
-3. **İstemci sayacı:** `static int clientCount` yerine eşzamanlı erişim ve çoklu sunucu senaryolarına uygun bağlantı takibi.
-4. **Güvenli yapılandırma:** SQL Server bağlantı dizesini koddan çıkarma; SignalR CORS politikasını bilinen origin'lerle sınırlandırma.
-5. **Taşınabilir derleme:** Yerel dosya yoluyla eklenen `QRCoder.dll` bağımlılığını paket yönetimine taşıma.
-6. **Güncel platform:** Destek süresi bitmiş .NET 6'dan desteklenen bir .NET sürümüne geçiş planlama.
+1. **Gerçek olay-tetiklemeli yayın:** Her saniye `invoke` yerine kayıt/işlem değişikliğinde `IHubContext<SignalRHub>` ile ilgili istemcilere yayın yapma.
+2. **Bağlantı dayanıklılığı:** `withAutomaticReconnect()` ve yeniden bağlanma senaryolarını ele alma.
+3. **Sohbet kapsamı:** Herkese yayın yerine kullanıcıya veya SignalR gruplarına özel mesajlar; gerekirse kalıcı mesaj geçmişi.
+4. **Ölçeklenebilirlik:** `static clientCount` yerine güvenilir ve eşzamanlılık güvenli bağlantı takibi; çoklu sunucu için uygun bir backplane / yönetilen SignalR hizmeti.
+5. **Kimlik doğrulama ve yetkilendirme:** Hub erişimini ve mesaj gönderme yetkilerini uygulama gereksinimine göre sınırlandırma.
+6. **Yapılandırma ve güvenlik:** Kaynak koda gömülü SQL Server bağlantısını ve harici API anahtarını ortam değişkenleri veya Secret Manager'a taşıma; repoya giren anahtarları **iptal edip yenileme**. CORS politikasında izinli origin listesini belirginleştirme.
+7. **Taşınabilirlik:** QRCoder dosya referansını paket yönetimine taşıma ve desteklenen bir .NET sürümüne yükseltme.
 
 </details>
 
@@ -295,11 +489,10 @@ Bu maddeler mevcut projede tamamlanmış özellikler değil, kod incelemesinden 
 
 <div align="center">
 
-**⚡ Projenin odağı: SignalR ile gerçek zamanlı istemci–sunucu iletişimi.**
+### ⚡ Real-time Communication with ASP.NET Core SignalR
 
-Restoran yönetimi, bu iletişimin istatistikler, masa durumları, mesajlaşma ve bildirimler üzerinden uygulandığı örnek bir kullanım alanıdır.
+**Ana hedef: SignalR Hub, Client ve çoklu istemci iletişimini gerçek kullanım senaryolarında uygulamak.**
 
-**Geliştirici:** [HalilGorkemUysal](https://github.com/HalilGorkemUysal)  
-**Kaynak kod:** [SignalRProject](https://github.com/HalilGorkemUysal/SignalRProject)
+[GitHub Deposu](https://github.com/HalilGorkemUysal/SignalRProject) · [SignalRHub Kaynak Kodu](SignalRApi/Hubs/SignalRHub.cs) · [Sohbet JavaScript Kodu](SignalRWebUI/wwwroot/js/chat.js)
 
 </div>
