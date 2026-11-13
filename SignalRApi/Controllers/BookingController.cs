@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
@@ -13,11 +14,13 @@ namespace SignalRApi.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateBookingDto> _validator;
 
-        public BookingController(IBookingService bookingService, IMapper mapper)
+        public BookingController(IBookingService bookingService, IMapper mapper, IValidator<CreateBookingDto> validator)
         {
             _bookingService = bookingService;
             _mapper = mapper;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -25,11 +28,16 @@ namespace SignalRApi.Controllers
         {
             var values = _bookingService.TGetListAll();
 
-            return Ok(_mapper.Map<ResultBookingDto>(values));
+            return Ok(_mapper.Map<List<ResultBookingDto>>(values));
         }
         [HttpPost]
         public IActionResult CreateBooking(CreateBookingDto createBookingDto)
         {
+            var validationResult = _validator.Validate(createBookingDto);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
 
             _bookingService.TAdd(_mapper.Map<Booking>(createBookingDto));
 
