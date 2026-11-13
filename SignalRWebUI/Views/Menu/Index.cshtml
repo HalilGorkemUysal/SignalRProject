@@ -32,16 +32,7 @@
 
 
             @await Component.InvokeAsync("MenuCategory")
-            @* <ul class="filters_menu">
-                <li class="active" data-filter="*">Hepsi</li>
-                <li data-filter=".Hamburger">Hamburger</li>
-                <li data-filter=".Pizza">Pizza</li>
-                <li data-filter=".Makarna">Makarna</li>
-                <li data-filter=".Kızartma">Kızartma</li>
-                <li data-filter=".Salata">Salatalar</li>
-                <li data-filter=".İçecek">İçecekler</li>
-                <li data-filter=".Tatlı">Tatlılar</li>
-            </ul> *@
+
 
             <div class="filters-content">
                 <div class="row grid">
@@ -139,18 +130,33 @@
     @await Component.InvokeAsync("UILayoutScripts")
 
     <script>
-            function showproductid(value){
-                var id = value;
-                $.ajax({
-                    type:'post',
-                    data: {item:id},
-                    url:"/Menu/AddBasket/" +id,                    
-                    contentType :'json',
-                    success:function(){
-                        swal("Seçilen ürün ID: "+id,"Seçtiğiniz Ürün Sepete Eklendi!","success")
-                    }
-                });
-            }
+        function showproductid(value) {
+        var id = value;
+           var menuTableId = @ViewBag.CustomerMenuTableId;
+
+            $.ajax({
+            type: 'POST',
+               url: '/Menu/AddBasket',
+                data: {
+                id: id,
+                menuTableId: menuTableId
+                },
+        success: function () {
+                    swal(
+                        "Başarılı!",
+                        "Seçtiğiniz ürün sepete eklendi!",
+                    "success"
+                    );
+                },
+                error: function () {
+                    swal(
+                        "Hata!",
+                        "Ürün sepete eklenemedi!",
+                        "error"
+                    );
+                }
+            });
+        }
 
 
 
